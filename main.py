@@ -7,7 +7,7 @@ from system_info import get_sys_info
 def main():
     root = tk.Tk()
     root.title("VEXTRIA Desktop")
-    root.geometry("360x300")
+    root.geometry("380x340")
     root.attributes("-topmost", True)
     root.resizable(False, False)
 
@@ -25,27 +25,51 @@ def main():
     )
     subtitle.pack(pady=5)
 
-    info = get_sys_info()
-
     details = ttk.Frame(root, padding=12)
     details.pack(fill="both", expand=True)
 
-    for key, value in info.items():
-        row = ttk.Frame(details)
-        row.pack(fill="x", pady=3)
+    info_labels = {}
 
-        ttk.Label(
-            row,
-            text=f"{key}:",
-            font=("Segoe UI", 9, "bold")
-        ).pack(side="left")
+    def refresh_info():
+        info = get_sys_info()
 
-        ttk.Label(
-            row,
-            text=str(value),
-            font=("Segoe UI", 9),
-            wraplength=210
-        ).pack(side="right")
+        for widget in details.winfo_children():
+            widget.destroy()
+
+        for key, value in info.items():
+            row = ttk.Frame(details)
+            row.pack(fill="x", pady=3)
+
+            ttk.Label(
+                row,
+                text=f"{key}:",
+                font=("Segoe UI", 9, "bold")
+            ).pack(side="left")
+
+            ttk.Label(
+                row,
+                text=str(value),
+                font=("Segoe UI", 9),
+                wraplength=220
+            ).pack(side="right")
+
+        status_label.config(text="System information updated!")
+
+    refresh_button = ttk.Button(
+        root,
+        text="Refresh",
+        command=refresh_info
+    )
+    refresh_button.pack(pady=5)
+
+    status_label = ttk.Label(
+        root,
+        text="Ready",
+        font=("Segoe UI", 8)
+    )
+    status_label.pack(pady=(0, 10))
+
+    refresh_info()
 
     root.mainloop()
 

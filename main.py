@@ -1,4 +1,4 @@
-
+from datetime import datetime
 import tkinter as tk
 from tkinter import ttk
 from system_info import get_sys_info
@@ -53,7 +53,11 @@ def main():
                 wraplength=220
             ).pack(side="right")
 
-        status_label.config(text="System information updated!")
+        current_time = datetime.now().strftime("%I:%M:%S %p")
+
+        status_label.config(
+        text=f"Last updated: {current_time}"
+        )
 
     refresh_button = ttk.Button(
         root,
@@ -61,6 +65,13 @@ def main():
         command=refresh_info
     )
     refresh_button.pack(pady=5)
+    minimize_button = ttk.Button(
+    root,
+    text="Minimize",
+    command=root.iconify
+)
+
+    minimize_button.pack(pady=5)
 
     status_label = ttk.Label(
         root,
@@ -68,6 +79,15 @@ def main():
         font=("Segoe UI", 8)
     )
     status_label.pack(pady=(0, 10))
+    
+    close_button = ttk.Button(
+    root,
+    text="Exit VEXTRIA",
+    command=root.destroy
+    )
+
+    close_button.pack(pady=5)
+
 
     refresh_info()
 
